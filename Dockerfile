@@ -1,6 +1,5 @@
 ## Parent image (first layer)
 FROM biocorecrg/centos-perlbrew-pyenv-java:latest
-#FROM centos/python-36-centos7
 ARG PYTHON_VERSION=3.6.3
 USER root 
 RUN bash
@@ -12,7 +11,7 @@ RUN yum -y upgrade
 RUN yum install -y which
 RUN yum -y install wget libcurl-devel
 
-## Install python3.7
+## Install python3.6
 WORKDIR /usr/local/bin
 RUN yum -y install gcc openssl-devel bzip2-devel libffi-devel zlib-devel xz-devel
 RUN wget https://www.python.org/ftp/python/3.6.3/Python-3.6.3.tgz
@@ -24,16 +23,13 @@ RUN yum install make -y
 RUN make altinstall
 RUN echo 'current location'
 
-#RUN rm python3
+
 WORKDIR /usr/bin
 RUN ln -fs /usr/local/bin/Python-3.6.3/python python3
-#RUN ln -fs /usr/local/bin/Python-3.6.3/python python
 RUN chmod +x python; chmod +x python3
-#RUN ln -fs /usr/local/bin/pip pip3
 
-# Intall pip
+# Install pip
 RUN yum -y install epel-release
-# RUN curl https://bootstrap.pypa.io/get-pip.py --output get-pip.py
 RUN curl https://bootstrap.pypa.io/pip/3.6/get-pip.py --output get-pip.py
 RUN python3 get-pip.py
 RUN python -m pip install --upgrade pip
@@ -53,7 +49,6 @@ RUN cd /usr/bin/; ln -fs /usr/local/bin/samtools-1.3/samtools samtools
 
 ## Install sam2tsv
 WORKDIR /usr/local/bin
-# RUN wget https://github.com/enovoa/EpiNano/raw/master/misc/sam2tsv.jar
 RUN wget https://github.com/novoalab/EpiNano/raw/master/misc/sam2tsv.jar
 
 ## Install dependencies
@@ -66,7 +61,6 @@ RUN pip3 install pytz==2021.1 scikit-learn==0.20.2 scipy==1.5.4 six==1.16.0 tool
 
 ### Install Epinnao
 WORKDIR /usr/local/bin
-# RUN git clone --depth 2 https://github.com/enovoa/EpiNano.git
 RUN git clone --depth 2 https://github.com/novoalab/EpiNano.git
 
 # Remove all archives
